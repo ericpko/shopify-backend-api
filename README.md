@@ -6,7 +6,7 @@
 - [Pipenv](https://pipenv.pypa.io/en/latest/)
 - [FASTapi](https://fastapi.tiangolo.com/)
 
-## Installation
+## Installation & Startup
 
 1. Make sure you have Python 3.10+ installed:
 `python --version`.
@@ -16,6 +16,12 @@
 
 3. Clone this repository into a directory of your choice.
 
-4. `cd` into the clone directory: `cd shopify-backend-api`
+4. `cd` into the cloned directory: `cd shopify-backend-api`
 
 5. Install the project dependencies: `pipenv install`
+
+6. Start the vitual environment that was created: `pipenv shell`
+
+7. Start the server: `uvicorn app.main:app --reload`
+
+## RESTful API
