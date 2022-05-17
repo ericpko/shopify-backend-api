@@ -2,7 +2,7 @@
 
 ## Tech Stack & Dependencies
 
-- Python 3.10 :snake:
+- Python 3.8 :snake:
 - [Pipenv](https://pipenv.pypa.io/en/latest/)
 - [FASTapi](https://fastapi.tiangolo.com/)
 
