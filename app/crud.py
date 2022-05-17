@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from typing import Optional, List
 
 from . import models, schemas
 
@@ -16,7 +17,7 @@ def create_item(db: Session, item: schemas.ItemBase) -> models.Item:
 
 
 # ----------------------------------- READ ----------------------------------- #
-def get_inventory(db: Session, deleted: bool | None = False) -> list[schemas.Item]:
+def get_inventory(db: Session, deleted: Optional[bool] = False) -> List[schemas.Item]:
     """
     If <deleted> is None, return all items.
     If <deleted> is True, return all deleted items.
@@ -30,7 +31,7 @@ def get_inventory(db: Session, deleted: bool | None = False) -> list[schemas.Ite
     return db.query(models.Item).all()
 
 
-def get_items_in_stock(db: Session, in_stock: bool = True) -> list[schemas.Item]:
+def get_items_in_stock(db: Session, in_stock: bool = True) -> List[schemas.Item]:
     """
     Return a list of all items in stock (and not deleted)
     """
@@ -49,14 +50,14 @@ def get_items_in_stock(db: Session, in_stock: bool = True) -> list[schemas.Item]
     )
 
 
-def get_item_by_id(db: Session, item_id: int) -> models.Item | None:
+def get_item_by_id(db: Session, item_id: int) -> Optional[models.Item]:
     """
     Return an item by id, or None if it doesn't exist
     """
     return db.query(models.Item).filter(models.Item.id == item_id).first()
 
 
-def get_item_by_name(db: Session, name: str) -> models.Item | None:
+def get_item_by_name(db: Session, name: str) -> Optional[models.Item]:
     """
     Return an item by name, or None if it doesn't exist
     """
@@ -66,7 +67,7 @@ def get_item_by_name(db: Session, name: str) -> models.Item | None:
 # ---------------------------------- UPDATE ---------------------------------- #
 def update_item(
     db: Session, item_id: int, item: schemas.ItemBase
-) -> models.Item | None:
+) -> Optional[models.Item]:
     """
     Update an item by id. Return None if the item doesn't exist
     """
@@ -81,7 +82,7 @@ def update_item(
     return db_item
 
 
-def restore_deleted_item(db: Session, item_id: int) -> models.Item | None:
+def restore_deleted_item(db: Session, item_id: int) -> Optional[models.Item]:
     """
     Restore a deleted item by id. Return None if the item doesn't exist
     """
@@ -98,7 +99,7 @@ def restore_deleted_item(db: Session, item_id: int) -> models.Item | None:
 
 def update_item_quantity(
     db: Session, item_id: int, quantity: int
-) -> models.Item | None:
+) -> Optional[models.Item]:
     """
     Update an item's quantity by id. Return None if the item doesn't exist
     """
@@ -113,7 +114,7 @@ def update_item_quantity(
 
 
 # ---------------------------------- DELETE ---------------------------------- #
-def delete_item(db: Session, item_id: int, comments: str) -> models.Item | None:
+def delete_item(db: Session, item_id: int, comments: str) -> Optional[models.Item]:
     """
     Delete an item by id. Return None if the item doesn't exist
     """

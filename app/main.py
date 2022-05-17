@@ -17,6 +17,7 @@
 # Author: Eric Koehli
 # ------------------------------------------------------------
 from fastapi import FastAPI
+from typing import Dict
 
 from .routers import inventory
 from .database import engine
@@ -34,5 +35,5 @@ app.include_router(inventory.router)
 
 # Home/Root
 @app.get("/")
-async def root() -> dict[str, str]:
+async def root() -> Dict[str, str]:
     return {"Greetings": "Shopify!"}

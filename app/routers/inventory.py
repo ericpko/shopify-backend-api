@@ -4,9 +4,9 @@
 # ------------------------------------------------------------
 from fastapi import APIRouter, Body, status, Depends, HTTPException
 from sqlalchemy.orm import Session
+from typing import Optional, List
 
 from .. import schemas
-from .. import models
 from .. import crud
 from ..dependencies import get_db
 
@@ -20,40 +20,40 @@ router = APIRouter(
 
 # ------------------------------------ GET ----------------------------------- #
 # localhost:3000/inventory/
-@router.get("/", response_model=list[schemas.Item])
-async def get_inventory(db: Session = Depends(get_db)) -> list[schemas.Item]:
+@router.get("/", response_model=List[schemas.Item])
+async def get_inventory(db: Session = Depends(get_db)) -> List[schemas.Item]:
     """
     Returns a list of all the non-deleted items in the inventory
     """
     return crud.get_inventory(db, deleted=False)
 
 
-@router.get("/deleted", response_model=list[schemas.Item])
-async def get_deleted_inventory(db: Session = Depends(get_db)) -> list[schemas.Item]:
+@router.get("/deleted", response_model=List[schemas.Item])
+async def get_deleted_inventory(db: Session = Depends(get_db)) -> List[schemas.Item]:
     """
     Returns a list of all the deleted items in the inventory
     """
     return crud.get_inventory(db, deleted=True)
 
 
-@router.get("/all", response_model=list[schemas.Item])
-async def get_all_inventory(db: Session = Depends(get_db)) -> list[schemas.Item]:
+@router.get("/all", response_model=List[schemas.Item])
+async def get_all_inventory(db: Session = Depends(get_db)) -> List[schemas.Item]:
     """
     Returns a list of all the items in the inventory
     """
     return crud.get_inventory(db, deleted=None)
 
 
-@router.get("/in-stock", response_model=list[schemas.Item])
-async def get_items_in_stock(db: Session = Depends(get_db)) -> list[schemas.Item]:
+@router.get("/in-stock", response_model=List[schemas.Item])
+async def get_items_in_stock(db: Session = Depends(get_db)) -> List[schemas.Item]:
     """
     Returns a list of all the in-stock items in the inventory
     """
     return crud.get_items_in_stock(db, in_stock=True)
 
 
-@router.get("/out-of-stock", response_model=list[schemas.Item])
-async def get_items_out_of_stock(db: Session = Depends(get_db)) -> list[schemas.Item]:
+@router.get("/out-of-stock", response_model=List[schemas.Item])
+async def get_items_out_of_stock(db: Session = Depends(get_db)) -> List[schemas.Item]:
     """
     Returns a list of all the out-of-stock items in the inventory
     """
@@ -129,7 +129,7 @@ async def update_item_quantity(
 # ---------------------------------- DELETE ---------------------------------- #
 @router.delete("/{item_id}", response_model=schemas.Item)
 async def delete_item(
-    item_id: int, comments: str | None = "", db: Session = Depends(get_db)
+    item_id: int, comments: Optional[str] = "", db: Session = Depends(get_db)
 ) -> schemas.Item:
     """
     Takes an item ID and deletes the item from the database.
